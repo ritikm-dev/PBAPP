@@ -1,45 +1,82 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+import React from 'react';
 import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
 
-function App() {
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import Login from './Login'; 
+
+const Stack = createNativeStackNavigator();
+
+function HomeScreen({ navigation }:any ) {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaProvider>
+    <View style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+      <Image
+        source={require('./assets/pbapp-logo.png')}
+        style={{ height: 100, width: 100 }}
+      />
+      <Text style={styles.text}>
+        Attendance {'\n'} And{'\n'} Gamified Learning App
+      </Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Login')}
+      >
+        <Text style={styles.buttonText}>GET STARTED</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
+export default function App() {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Login" component={Login} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  button: {
+    margin: 12,
+    backgroundColor: 'lightgreen',
+    height: 40,
+    width: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
-
-export default App;
